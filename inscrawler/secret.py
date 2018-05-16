@@ -1,4 +1,4 @@
 import os
 
-username = os.environ.get('USERNAME', 'reborn3388x')
-password = os.environ.get('PASSWORD', 'reborn1637')
+username = os.environ.get('USERNAME', '')
+password = os.environ.get('PASSWORD', '')

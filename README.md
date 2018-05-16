@@ -9,18 +9,22 @@ This crawler fork from [ins-crawler](https://github.com/huaying/ins-crawler) and
 3. Install Selenium: `pip install -r requirements.txt`
 4. `cp inscrawler/secret.py.dist inscrawler/secret.py`
 
-
-### Usage
+### configure
+```sh
+./storage/__init__.py      # setting storage URL.
+./inscrawler/secret.py     # setting login ID and password.
 ```
+### Usage
+```sh
 positional arguments:
   mode                  options: [posts, profile, hashtag]
 
 optional arguments:
-  -h, --help                        (show this help message and exit)
-  -n NUMBER, --number NUMBER        (number of returned posts)
-  -u USERNAME, --username USERNAME  (instagram's username)
-  -t TAG, --tag TAG                 (instagram's tag name)
-  -o OUTPUT, --output OUTPUT        (output file name(json format))
+  -h, --help                        # show this help message and exit.
+  -n NUMBER, --number NUMBER        # number of returned posts.
+  -u USERNAME, --username USERNAME  # instagram's username.
+  -t TAG, --tag TAG                 # instagram's tag name.
+  -o OUTPUT, --output OUTPUT        # output file name(json format).
 ```
 
 ### Example

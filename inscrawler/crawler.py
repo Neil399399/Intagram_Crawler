@@ -137,10 +137,9 @@ class InsCrawler:
         print('Done. Fetched %s posts.' % (min(len(posts), num)))
         return posts[:num]
 
-
     def _get_tag(self, num):
         '''
-            To get posts, we have to click on the load more
+            To get tags, we have to click on the load more
             button and make the browser call post api.
         '''
         TIMEOUT = 600
@@ -158,6 +157,7 @@ class InsCrawler:
                     content = ele_img.get_attribute('alt')
                     img_url = ele_img.get_attribute('src')
                     dict_posts[key] = {
+                        'post_owner':'',
                         'content': content,
                         'img_url': img_url
                     }
@@ -184,7 +184,7 @@ class InsCrawler:
                 break
 
 
-        # go connect to href page to get post owner.
+        # connect to href url and get post owner.
         for key in dict_posts:
             browser.get(key)
             post_owner = browser.find_one('._eeohz a')

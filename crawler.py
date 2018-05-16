@@ -45,6 +45,9 @@ def output(data, filepath):
     else:
         print(out)
 
+# save in solr.
+# def save_in_solr():
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Instagram Crawler',
