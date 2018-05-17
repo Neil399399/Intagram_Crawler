@@ -37,25 +37,29 @@ class InsCrawler:
         browser = self.browser
         url = '%s/%s/' % (InsCrawler.URL, username)
         browser.get(url)
-        name = browser.find_one('._kc4z2')
-        desc = browser.find_one('._tb97a span')
-        photo = browser.find_one('._rewi8')
-        statistics = [ele.text for ele in browser.find('._fd86t')]
-        post_num, follower_num, following_num = statistics
-        return {
-            'name': name.text,
-            'desc': desc.text if desc else None,
-            'photo_url': photo.get_attribute('src'),
-            'post_num': post_num,
-            'follower_num': follower_num,
-            'following_num': following_num
-        }
+        try:
+            name = browser.find_one('._kc4z2')
+            desc = browser.find_one('._tb97a span')
+            photo = browser.find_one('._rewi8')
+            statistics = [ele.text for ele in browser.find('._fd86t')]
+            post_num, follower_num, following_num = statistics
+            return {
+                'name': name.text,
+                'desc': desc.text if desc else None,
+                'photo_url': photo.get_attribute('src'),
+                'post_num': post_num,
+                'follower_num': follower_num,
+                'following_num': following_num
+            }
+        except:
+            return 'No found'
 
     def get_user_posts(self, tag, username, number=None):
         user_profile = self.get_user_profile(username)
-        if not number:
-            number = instagram_int(user_profile['post_num'])
-        return self._get_posts(tag,number,username)
+        if user_profile != 'No found':
+            if not number:
+                number = instagram_int(user_profile['post_num'])
+            return self._get_posts(tag,number,username)
 
 
 
