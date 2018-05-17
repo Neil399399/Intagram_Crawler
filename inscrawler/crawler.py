@@ -4,7 +4,7 @@ from .utils import instagram_int
 from .utils import retry
 from .utils import randmized_sleep
 from . import secret
-from time import sleep
+from time import sleep, time
 
 
 class InsCrawler:
@@ -51,17 +51,24 @@ class InsCrawler:
             'following_num': following_num
         }
 
-    def get_user_posts(self, username, number=None):
+    def get_user_posts(self, tag, username, number=None):
         user_profile = self.get_user_profile(username)
         if not number:
             number = instagram_int(user_profile['post_num'])
-        return self._get_posts(number)
+        return self._get_posts(tag,number,username)
+
 
 
     def get_latest_posts_by_tag(self, tag, num):
         url = '%s/explore/tags/%s/' % (InsCrawler.URL, tag)
         self.browser.get(url)
         return self._get_tag(num)
+
+    def get_user_posts_from_tag(self, tag, num):
+        url = '%s/explore/tags/%s/' % (InsCrawler.URL, tag)
+        self.browser.get(url)
+        user_list = self._get_all_tags_owner(num)
+        return user_list
 
     def auto_like(self, tag='', maximum=1000):
         self.login()
@@ -87,7 +94,7 @@ class InsCrawler:
             else:
                 break
 
-    def _get_posts(self, num):
+    def _get_posts(self,tag, num, username):
         '''
             To get posts, we have to click on the load more
             button and make the browser call post api.
@@ -107,6 +114,8 @@ class InsCrawler:
                     content = ele_img.get_attribute('alt')
                     img_url = ele_img.get_attribute('src')
                     dict_posts[key] = {
+                        'tag': tag,
+                        'post_owner':username,
                         'content': content,
                         'img_url': img_url
                     }
@@ -125,7 +134,7 @@ class InsCrawler:
 
             return pre_post_num, wait_time
 
-        print('Strating fetching...')
+        print('Strating fetching userID:'+username+'...')
         while len(dict_posts) < num and wait_time < TIMEOUT:
             pre_post_num, wait_time = start_fetching(pre_post_num, wait_time)
 
@@ -142,6 +151,7 @@ class InsCrawler:
             To get tags, we have to click on the load more
             button and make the browser call post api.
         '''
+        Start_time = time()
         TIMEOUT = 600
         browser = self.browser
         dict_posts = {}
@@ -192,7 +202,62 @@ class InsCrawler:
             dict_posts[key]['post_owner'] = ID
         browser.scroll_down()
 
-
         posts = list(dict_posts.values())
         print('Done. Fetched %s posts.' % (min(len(posts), num)))
+        print('Running time:',time()-Start_time)
         return posts[:num]
+
+    # get all user ID who used this tag.
+    def _get_all_tags_owner(self, num):
+        '''
+            To get all post_owner who used this tag, we have to click on the load more
+            button and make the browser call post api.
+        '''
+        Start_time = time()
+        TIMEOUT = 600
+        browser = self.browser
+        all_tag_url = []
+        all_post_owner = []
+        pre_post_num = 0
+        wait_time = 1
+
+        def start_fetching(pre_post_num, wait_time):
+            ele_posts = browser.find('._mck9w a')
+            for ele in ele_posts:
+                key = ele.get_attribute('href')
+                if key not in all_tag_url:
+                    all_tag_url.append(key)
+
+            if pre_post_num == len(all_tag_url):
+                print('Number of fetched posts: %s' % pre_post_num)
+                print('Wait for %s sec...' % (wait_time))
+                sleep(wait_time)
+                wait_time *= 2
+                browser.scroll_up(300)
+            else:
+                wait_time = 1
+
+            pre_post_num = len(all_tag_url)
+            browser.scroll_down()
+            return pre_post_num, wait_time
+
+        print('Strating fetching...')
+        while len(all_tag_url) < num and wait_time < TIMEOUT:
+            pre_post_num, wait_time = start_fetching(pre_post_num, wait_time)
+
+            loading = browser.find_one('._anzsd._o5uzb')
+            if (not loading and wait_time > TIMEOUT/2):
+                break
+
+
+        # connect to href url and get post owner.
+        for url in all_tag_url:
+            browser.get(url)
+            post_owner = browser.find_one('._eeohz a')
+            ID = post_owner.get_attribute('title')
+            all_post_owner.append(ID)
+        browser.scroll_down()
+
+        print('Done. Fetched %s IDs.' % (min(len(all_post_owner), num)))
+        print('Running time:',time()-Start_time)
+        return all_post_owner

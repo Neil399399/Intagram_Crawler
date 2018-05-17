@@ -17,6 +17,7 @@ def search_userID():
 def writer(data):
     client = pysolr.Solr(solr_url,timeout=10)
     try:
-        client.add([data])
+        client.add(data)
+        return 'Success save.'
     except:
         return 'write failed.'
