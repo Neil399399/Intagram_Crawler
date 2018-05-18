@@ -1,3 +1,4 @@
+# coding=UTF-8
 from storage import solr_url
 import pysolr
 

@@ -1,10 +1,11 @@
+# coding=UTF-8
 from inscrawler import InsCrawler
 import sys
 import argparse
 import json
 from io import open
 from storage.solr import writer
-
+from config import tag_list
 
 def usage():
     return '''
@@ -86,9 +87,10 @@ if __name__ == '__main__':
         output(
             get_posts_by_hashtag(args.tag, args.tagNumber or 100),args.output)
     elif args.mode == 'poststag':
-        arg_required('tag')
-        user_list = get_user_posts_by_tags(args.tag, args.tagNumber or 100)
-        for userID in user_list:
-            save_in_solr(get_posts_by_user(args.tag,userID,args.postNumber))
+        for tag in tag_list:
+            user_list = get_user_posts_by_tags(tag, args.tagNumber or 100)
+            for userID in user_list:
+                save_in_solr(get_posts_by_user(tag,userID,args.postNumber))
+                # output(get_posts_by_user(args.tag,userID,args.postNumber),args.output)
     else:
         usage()

@@ -1,3 +1,4 @@
+# coding=UTF-8
 from selenium.webdriver.common.keys import Keys
 from .browser import Browser
 from .utils import instagram_int
@@ -118,7 +119,7 @@ class InsCrawler:
                     content = ele_img.get_attribute('alt')
                     img_url = ele_img.get_attribute('src')
                     dict_posts[key] = {
-                        'tag': tag,
+                        'tag': str(tag),
                         'post_owner':username,
                         'content': content,
                         'img_url': img_url
@@ -147,7 +148,7 @@ class InsCrawler:
                 break
 
         posts = list(dict_posts.values())
-        print('Done. Fetched %s posts.' % (min(len(posts), num)))
+        print('Done. Fetched %s posts.' % len(posts))
         return posts[:num]
 
     def _get_tag(self, num):
@@ -257,9 +258,12 @@ class InsCrawler:
         # connect to href url and get post owner.
         for url in all_tag_url:
             browser.get(url)
-            post_owner = browser.find_one('._eeohz a')
-            ID = post_owner.get_attribute('title')
-            all_post_owner.append(ID)
+            try:
+                post_owner = browser.find_one('._eeohz a')
+                ID = post_owner.get_attribute('title')
+                all_post_owner.append(ID)
+            except:
+                continue
         browser.scroll_down()
 
         print('Done. Fetched %s IDs.' % (min(len(all_post_owner), num)))
