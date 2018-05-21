@@ -112,13 +112,16 @@ class InsCrawler:
 
         def start_fetching(pre_post_num, wait_time):
             ele_posts = browser.find('._mck9w a')
+            Id = 0
             for ele in ele_posts:
+                Id +=1
                 key = ele.get_attribute('href')
                 if key not in dict_posts:
                     ele_img = browser.find_one('._2di5p', ele)
                     content = ele_img.get_attribute('alt')
                     img_url = ele_img.get_attribute('src')
                     dict_posts[key] = {
+                        'id': str(tag)+'-'+username+'-'+str(Id),
                         'tag': str(tag),
                         'post_owner':username,
                         'content': content,
@@ -139,7 +142,7 @@ class InsCrawler:
 
             return pre_post_num, wait_time
 
-        print('Strating fetching userID:'+username+'...')
+        print('Starting fetching userID:'+username+' ...')
         while len(dict_posts) < num and wait_time < TIMEOUT:
             pre_post_num, wait_time = start_fetching(pre_post_num, wait_time)
 
@@ -246,7 +249,7 @@ class InsCrawler:
             browser.scroll_down()
             return pre_post_num, wait_time
 
-        print('Strating fetching...')
+        print('Starting fetching...')
         while len(all_tag_url) < num and wait_time < TIMEOUT:
             pre_post_num, wait_time = start_fetching(pre_post_num, wait_time)
 

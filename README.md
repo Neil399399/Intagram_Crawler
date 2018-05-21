@@ -34,7 +34,7 @@ optional arguments:
 python3 crawler.py posts -u cal_foodie -n 100 -o ./output
 python3 crawler.py profile -u cal_foodie -o ./output
 python3 crawler.py hashtag -t taiwan -o ./output
-python3 crawler.py poststag -t TAG -tn 100 -pn 100
+python3 crawler.py poststag -tn 100 -pn 100 (get tag from tag_list in config.py)
 ```
 1. Return default 100 hashtag posts(mode: hashtag) and all user's posts(mode: posts) if not specifying the number of post `-n`, `--number`.
 2. Save the result in storage if not specifying the output path of post `-o`, `--output`.
@@ -58,6 +58,6 @@ optional arguments:
 ```
 ### Example
 ```sh
-python3 downloader.py user -s solr -u userID -n 10 -o ./temp
-python3 downloader.py tag -s solr -t tag -o -n 10 ./temp
+python3 downloader.py user -s solr -d image -u userID -n 10 -o ./temp
+python3 downloader.py tag -s solr -d image -t tag -o -n 10 ./temp
 ```

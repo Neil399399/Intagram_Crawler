@@ -32,10 +32,23 @@ def download_img(search_result,output_dir):
     for data in search_result:
         num +=1
         try:
-            urlretrieve(data['img_url_str'][0],output_dir+'/'+data['post_owner_str'][0]+'_'+str(num)+'.jpg')
+            urlretrieve(data['img_url_str'][0],output_dir+'/'+data['id']+'.jpg')
         except:
             continue
     print('Finished download.')
+
+# download content.
+# def download_content(search_result,output_dir):
+#     if not os.path.exists(output_dir):
+#         os.mkdir(output_dir)
+#     num = 0
+#     for data in search_result:
+#         num +=1
+#         try:
+#         except:
+#             continue
+#     print('Finished download.')
+    
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Instagram Downloader',usage=usage())
