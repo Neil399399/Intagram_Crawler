@@ -50,7 +50,7 @@ positional arguments:
 optional arguments:
   -h, --help                        # show this help message and exit.
   -s STORAGE, --storage             # The storage where data store.
-  -d DOWNLOAD, --download target    # what you want download.(now only images)
+  -d DOWNLOAD, --download target    # what you want download.(image or content)
   -u USERNAME, --userID USERNAME    # instagram's username.
   -t TAG, --tag TAG                 # instagram's tag name.
   -n NUMBER, --number NUMBER        # number of returned posts.
@@ -60,4 +60,6 @@ optional arguments:
 ```sh
 python3 downloader.py user -s solr -d image -u userID -n 10 -o ./temp
 python3 downloader.py tag -s solr -d image -t tag -o -n 10 ./temp
+python3 downloader.py user -s solr -d content -u userID -n 10 -o ./temp.json
+python3 downloader.py tag -s solr -d content -t tag -n 10 -o ./temp.json
 ```
