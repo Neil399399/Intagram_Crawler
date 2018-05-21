@@ -4,6 +4,8 @@ from storage.solr import search
 import sys
 import os
 import argparse
+import json
+
 
 def usage():
     return '''
@@ -28,9 +30,7 @@ def get_data(storage,mode,key,number):
 def download_img(search_result,output_dir):
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
-    num = 0
     for data in search_result:
-        num +=1
         try:
             urlretrieve(data['img_url_str'][0],output_dir+'/'+data['id']+'.jpg')
         except:
@@ -38,16 +38,22 @@ def download_img(search_result,output_dir):
     print('Finished download.')
 
 # download content.
-# def download_content(search_result,output_dir):
-#     if not os.path.exists(output_dir):
-#         os.mkdir(output_dir)
-#     num = 0
-#     for data in search_result:
-#         num +=1
-#         try:
-#         except:
-#             continue
-#     print('Finished download.')
+def download_content(search_result,filepath):
+    if filepath:
+        file = open(filepath, 'w')
+    for data in search_result:
+        # remove some key that don't need.
+        del data['img_url']
+        del data['img_url_str']
+        del data['post_owner']
+        del data['post_owner_str']
+        del data['content_str']
+        del data['tag_str']
+        del data['_version_']
+        out = json.dumps(data, ensure_ascii=False)
+        file.write(out+'\n')
+    file.close()
+    print('Finished download.')
     
     
 if __name__ == '__main__':
@@ -59,18 +65,23 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--tag',help='Instagram tag in storage.')
     parser.add_argument('-n', '--number',type=int,help='number of the data you want take.')
     parser.add_argument('-o', '--output',help='output folder.')
-
     args = parser.parse_args()
 
+    # user.
     if args.mode == 'user':
         arg_required('userID')
         arg_required('download')
         if args.download == 'image':
             download_img(get_data(args.storage,'post_owner_str',args.userID,args.number),args.output)
+        elif args.download == 'image':
+            download_content(get_data(args.storage,'post_owner_str',args.userID,args.number),args.output)
+    # tag.
     elif args.mode == 'tag':
         arg_required('tag')
         arg_required('download')
         if args.download == 'image':
             download_img(get_data(args.storage,'tag_str',args.tag,args.number),args.output)
+        elif args.download == 'content':
+            download_content(get_data(args.storage,'tag_str',args.tag,args.number),args.output)
     else:
         usage()
