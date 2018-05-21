@@ -1,17 +1,17 @@
 # coding=UTF-8
 from storage import solr_url
 import pysolr
+import requests
 
 
 # search intagram username in solr.
-def search_userID():
-    client = pysolr.Solr(solr_url,timeout=10)
+def search(mode,key,number):
+    client = pysolr.Solr(solr_url)
     try:
-        # search
-        search_result = client.search('post_owner')
+        search_result = client.search(mode+':'+key,rows=number)
+        return search_result
     except:
-        return 'search userID failed.'
-
+        print('search failed.')
 
 
 
