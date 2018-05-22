@@ -117,16 +117,19 @@ class InsCrawler:
                 Id +=1
                 key = ele.get_attribute('href')
                 if key not in dict_posts:
-                    ele_img = browser.find_one('._2di5p', ele)
-                    content = ele_img.get_attribute('alt')
-                    img_url = ele_img.get_attribute('src')
-                    dict_posts[key] = {
-                        'id': str(tag)+'-'+username+'-'+str(Id),
-                        'tag': str(tag),
-                        'post_owner':username,
-                        'content': content,
-                        'img_url': img_url
-                    }
+                    try:
+                        ele_img = browser.find_one('._2di5p', ele)
+                        content = ele_img.get_attribute('alt')
+                        img_url = ele_img.get_attribute('src')
+                        dict_posts[key] = {
+                            'id': str(tag)+'-'+username+'-'+str(Id),
+                            'tag': str(tag),
+                            'post_owner':username,
+                            'content': content,
+                            'img_url': img_url
+                        }
+                    except:
+                        continue
 
             if pre_post_num == len(dict_posts):
                 print('Number of fetched posts: %s' % pre_post_num)
