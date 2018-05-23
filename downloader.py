@@ -42,16 +42,19 @@ def download_content(search_result,filepath):
     if filepath:
         file = open(filepath, 'w')
     for data in search_result:
-        # remove some key that don't need.
-        del data['img_url']
-        del data['img_url_str']
-        del data['post_owner']
-        del data['post_owner_str']
-        del data['content_str']
-        del data['tag_str']
-        del data['_version_']
-        out = json.dumps(data, ensure_ascii=False)
-        file.write(out+'\n')
+        try:
+            # remove some key that don't need.
+            del data['img_url']
+            del data['img_url_str']
+            del data['post_owner']
+            del data['post_owner_str']
+            del data['content_str']
+            del data['tag_str']
+            del data['_version_']
+            out = json.dumps(data, ensure_ascii=False)
+            file.write(out+'\n')
+        except:
+            continue
     file.close()
     print('Finished download.')
     
