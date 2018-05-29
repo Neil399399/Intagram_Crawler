@@ -58,8 +58,8 @@ optional arguments:
 ```
 ### Example
 ```sh
-python3 downloader.py user -s solr -d image -u userID -n 10 -o ./temp
-python3 downloader.py tag -s solr -d image -t tag -o -n 10 ./temp
-python3 downloader.py user -s solr -d content -u userID -n 10 -o ./temp.json
-python3 downloader.py tag -s solr -d content -t tag -n 10 -o ./temp.json
+python3 downloader.py user -s solr -d image -u userID -n 10 -o ./example/tag
+python3 downloader.py tag -s solr -d image -t tag -n 10 -o ./example/tag
+python3 downloader.py user -s solr -d content -u userID -n 10 -o ./example/temp.json
+python3 downloader.py tag -s solr -d content -t tag -n 10 -o ./example/temp.json
 ```
