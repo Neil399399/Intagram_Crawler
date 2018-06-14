@@ -119,6 +119,7 @@ class InsCrawler:
                 key = ele.get_attribute('href')
                 if key not in dict_posts:
                     try:
+                        print(key)
                         ele_img = browser.find_one(each_post_class_name, ele)
                         content = ele_img.get_attribute('alt')
                         img_url = ele_img.get_attribute('src')
