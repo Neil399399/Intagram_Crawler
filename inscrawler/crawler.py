@@ -227,7 +227,7 @@ class InsCrawler:
             button and make the browser call post api.
         '''
         Start_time = time()
-        TIMEOUT = 200
+        TIMEOUT = 600
         browser = self.browser
         all_tag_url = []
         all_post_owner = []
