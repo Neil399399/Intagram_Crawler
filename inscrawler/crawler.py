@@ -7,7 +7,7 @@ from .utils import randmized_sleep
 from . import secret
 from time import sleep, time
 from config import user_name,user_desc,user_photo,user_statistics,posts_class_name,each_post_class_name,user_ID_class_name
-
+from config import version
 
 
 class InsCrawler:
@@ -15,7 +15,7 @@ class InsCrawler:
     RETRY_LIMIT = 10
 
     def __init__(self, has_screen=False):
-        self.browser = Browser(has_screen)
+        self.browser = Browser(has_screen,version)
         self.page_height = 0
 
     def login(self):

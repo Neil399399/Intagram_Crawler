@@ -7,7 +7,7 @@ from .utils import randmized_sleep
 
 
 class Browser:
-    def __init__(self, has_screen):
+    def __init__(self, has_screen,version):
         dir_path = os.path.dirname(os.path.realpath(__file__))
         service_args = ['--ignore-ssl-errors=true']
         chrome_options = Options()
@@ -16,7 +16,7 @@ class Browser:
         chrome_options.add_argument("--window-size=768,920")
         chrome_options.add_argument("--no-sandbox")
         self.driver = webdriver.Chrome(
-            executable_path='%s/bin/chromedriver' % dir_path,
+            executable_path='%s/bin/%s/chromedriver' % (dir_path,version),
             service_args=service_args,
             chrome_options=chrome_options)
         self.driver.implicitly_wait(5)
