@@ -73,7 +73,7 @@ class InsCrawler:
     def get_user_posts_from_tag(self, tag, num):
         url = '%s/explore/tags/%s/' % (InsCrawler.URL, tag)
         self.browser.get(url)
-        user_list = self._get_all_tags_owner(num)
+        user_list = self._get_all_tags_owner(num,tag)
         return user_list
 
     def auto_like(self, tag='', maximum=1000):
@@ -105,7 +105,7 @@ class InsCrawler:
             To get posts, we have to click on the load more
             button and make the browser call post api.
         '''
-        TIMEOUT = 30
+        TIMEOUT = 600
         browser = self.browser
         dict_posts = {}
         pre_post_num = 0
@@ -221,7 +221,7 @@ class InsCrawler:
         return posts[:num]
 
     # get all user ID who used this tag.
-    def _get_all_tags_owner(self, num):
+    def _get_all_tags_owner(self, num, tag):
         '''
             To get all post_owner who used this tag, we have to click on the load more
             button and make the browser call post api.
@@ -258,7 +258,7 @@ class InsCrawler:
             browser.scroll_down()
             return pre_post_num, wait_time
 
-        print('Starting fetching...')
+        print('Starting fetching ... tag '+tag)
         while len(all_tag_url) < num and wait_time < TIMEOUT:
             pre_post_num, wait_time = start_fetching(pre_post_num, wait_time)
 
