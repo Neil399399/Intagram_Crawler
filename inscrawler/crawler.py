@@ -105,7 +105,7 @@ class InsCrawler:
             To get posts, we have to click on the load more
             button and make the browser call post api.
         '''
-        TIMEOUT = 600
+        TIMEOUT = 30
         browser = self.browser
         dict_posts = {}
         pre_post_num = 0

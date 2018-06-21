@@ -27,13 +27,28 @@ def get_data(storage,mode,key,number):
         print('No this storage/Data.')
 
 # download image.
-def download_img(search_result,output_dir):
+def download_imgs(search_result,output_dir):
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
     for data in search_result:
         try:
             urlretrieve(data['img_url_str'][0],output_dir+'/'+data['id']+'.jpg')
         except:
+            print("[Warning] Can't found this picture.")
+            continue
+    print('Finished download.')
+
+# download image.
+def download_img(search_result,output_dir):
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
+    for data in search_result:
+        if not os.path.exists(output_dir+'/'+data['post_owner'][0]):
+            os.mkdir(output_dir+'/'+data['post_owner'][0])
+        try:
+            urlretrieve(data['img_url_str'][0],output_dir+'/'+data['post_owner'][0]+'/'+data['id']+'.jpg')
+        except:
+            print("[Warning] Can't found this picture.")
             continue
     print('Finished download.')
 
@@ -54,6 +69,7 @@ def download_content(search_result,filepath):
             out = json.dumps(data, ensure_ascii=False)
             file.write(out+'\n')
         except:
+            print("[Warning] Can't found this content.")
             continue
     file.close()
     print('Finished download.')
@@ -75,11 +91,19 @@ if __name__ == '__main__':
         arg_required('userID')
         arg_required('download')
         if args.download == 'image':
-            download_img(get_data(args.storage,'post_owner_str',args.userID,args.number),args.output)
-        elif args.download == 'image':
+            download_imgs(get_data(args.storage,'post_owner_str',args.userID,args.number),args.output)
+        elif args.download == 'content':
             download_content(get_data(args.storage,'post_owner_str',args.userID,args.number),args.output)
     # tag.
     elif args.mode == 'tag':
+        arg_required('tag')
+        arg_required('download')
+        if args.download == 'image':
+            download_imgs(get_data(args.storage,'tag_str',args.tag,args.number),args.output)
+        elif args.download == 'content':
+            download_content(get_data(args.storage,'tag_str',args.tag,args.number),args.output)
+    # tag-user.
+    elif args.mode == 'taguser':
         arg_required('tag')
         arg_required('download')
         if args.download == 'image':

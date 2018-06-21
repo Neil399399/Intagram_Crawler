@@ -4,7 +4,7 @@ tag_list = ['衣服','住宅','藝術','車']
 
 # OS version.
 # macOSX or linux
-version = 'macOSX'
+version = 'linux'
 # instagram html class name.
 posts_class_name = '.Nnq7C.weEfm a'
 each_post_class_name = '.FFVAD'
