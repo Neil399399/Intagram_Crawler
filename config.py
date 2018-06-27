@@ -1,6 +1,6 @@
 # tags
 # coding=UTF-8
-tag_list = ['衣服','住宅','藝術','車']
+tag_list = ['food','服飾','shirt','ootd','建築','building','fashion','art','旅遊','travel','自然','nature','自拍','selfie','動物','animal','car','moto']
 
 # OS version.
 # macOSX or linux
